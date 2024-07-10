@@ -26,6 +26,5 @@
 ../testcase/data_sequence.sv
 ../testcase/forward_test.sv
 
-../multi_simv_communication/datapacket.sv
 # 顶层测试平台
 ./tb_top_1.sv
