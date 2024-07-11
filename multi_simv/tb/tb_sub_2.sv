@@ -15,7 +15,7 @@ program socket_pgm(
     initial begin
         int init_result;
         string testname;
-        string socket_patg_pre;
+        string socket_path_pre;
 
         tx_packet1 = new();
         tx_packet2 = new();
@@ -29,28 +29,28 @@ program socket_pgm(
             $finish;
         end
 
-        void'($sformat(socket_patg_pre, "/tmp/%s_socket_", testname));
+        void'($sformat(socket_path_pre, "/tmp/%s_socket_", testname));
         
         // 初始化 socket
-        init_result = socket_init(0, "", 0, socket_patg_pre, 0);  // socket0 作为客户端
+        init_result = socket_init(0, "", 0, socket_path_pre, 0);  // socket0 作为客户端
         if (init_result == -1) begin
             $display("Failed to connect to server socket0");
             $finish;
         end
 
-        init_result = socket_init(1, "", 0, socket_patg_pre, 1);  // socket1 作为服务器
+        init_result = socket_init(1, "", 0, socket_path_pre, 1);  // socket1 作为服务器
         if (init_result == -1) begin
             $display("Failed to initialize socket1 to server");
             $finish;
         end
 
-        init_result = socket_init(1, "", 0, socket_patg_pre, 2);  // socket2 作为服务器
+        init_result = socket_init(1, "", 0, socket_path_pre, 2);  // socket2 作为服务器
         if (init_result == -1) begin
             $display("Failed to initialize socket2 to server");
             $finish;
         end
         
-        init_result = socket_init(0, "", 0, socket_patg_pre, 5);  // socket5 作为客户端
+        init_result = socket_init(0, "", 0, socket_path_pre, 5);  // socket5 作为客户端
         if (init_result == -1) begin
             $display("Failed to initialize socket2 to server");
             $finish;

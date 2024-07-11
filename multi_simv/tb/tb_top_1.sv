@@ -16,7 +16,7 @@ program socket_pgm(
     initial begin
         int init_result;
         string testname;
-        string socket_patg_pre;
+        string socket_path_pre;
 
         tx_packet1 = new();
         tx_packet2 = new();
@@ -30,28 +30,28 @@ program socket_pgm(
             $finish;
         end
 
-        void'($sformat(socket_patg_pre, "/tmp/%s_socket_", testname));
+        void'($sformat(socket_path_pre, "/tmp/%s_socket_", testname));
 
         // 初始化 socket
-        init_result = socket_init(1, "", 0, socket_patg_pre, 0);  // socket0 作为服务器
+        init_result = socket_init(1, "", 0, socket_path_pre, 0);  // socket0 作为服务器
         if (init_result == -1) begin
             $display("Failed to initialize server socket");
             $finish;
         end
 
-        init_result = socket_init(0, "", 0, socket_patg_pre, 3);  // socket3 作为客户端
+        init_result = socket_init(0, "", 0, socket_path_pre, 3);  // socket3 作为客户端
         if (init_result == -1) begin
             $display("Failed to connect socket3 to server");
             $finish;
         end
 
-        init_result = socket_init(0, "", 0, socket_patg_pre, 4);  // socket4 作为客户端
+        init_result = socket_init(0, "", 0, socket_path_pre, 4);  // socket4 作为客户端
         if (init_result == -1) begin
             $display("Failed to connect socket4 to server");
             $finish;
         end
 
-        init_result = socket_init(1, "", 0, socket_patg_pre, 5, 3);  // socket5 作为服务器,接收三个客户端的连接
+        init_result = socket_init(1, "", 0, socket_path_pre, 5, 3);  // socket5 作为服务器,接收三个客户端的连接
         if (init_result == -1) begin
             $display("Failed to connect socket4 to server");
             $finish;
@@ -70,8 +70,6 @@ program socket_pgm(
                 string recv_data;
                 @(posedge intf_internal.clk or negedge intf_internal.rst_n);
                 if (intf_internal.rst_n) begin
-                    string sub;
-
                     // 准备发送数据
                     tx_packet1.data = intf_internal.data;
                     tx_packet1.valid = intf_internal.valid;
