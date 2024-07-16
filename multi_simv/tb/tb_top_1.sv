@@ -68,32 +68,31 @@ program socket_pgm(
             forever begin
                 string send_status;
                 string recv_data;
-                @(posedge intf_internal.clk or negedge intf_internal.rst_n);
-                if (intf_internal.rst_n) begin
-                    // 准备发送数据
-                    tx_packet1.data = intf_internal.data;
-                    tx_packet1.valid = intf_internal.valid;
+                #1;
 
-                    // 发送数据
-                    send_status = socket_send(0, tx_packet1.serialize());
-                    if (debug == "1") begin
-                        $display("Socket0 Send data at %t: %s\n", $time, tx_packet1.serialize());
-                    end
-                    if (send_status.substr(0, 1) != "OK") begin
-                        $display("Socket0 Send failed: xxx%sxxx", send_status.substr(0, 1));
-                    end
+                // 准备发送数据
+                tx_packet1.data = intf_internal.data;
+                tx_packet1.valid = intf_internal.valid;
 
-                    // 接收ready信号
-                    recv_data = socket_recv(0);
-                    if (debug == "1") begin
-                        $display("Socket0 Receive ready at %t: %s\n", $time, recv_data);
-                    end
-                    if (recv_data.substr(0, 4) != "ERROR") begin
-                        rx_packet1.deserialize(recv_data);
-                        intf_internal.ready = rx_packet1.ready;
-                    end else begin
-                        $display("Socket0 Receive failed: %s", recv_data);
-                    end
+                // 发送数据
+                send_status = socket_send(0, tx_packet1.serialize());
+                if (debug == "1") begin
+                    $display("Socket0 Send data at %t: %s\n", $time, tx_packet1.serialize());
+                end
+                if (send_status.substr(0, 1) != "OK") begin
+                    $display("Socket0 Send failed: xxx%sxxx", send_status.substr(0, 1));
+                end
+
+                // 接收ready信号
+                recv_data = socket_recv(0);
+                if (debug == "1") begin
+                    $display("Socket0 Receive ready at %t: %s\n", $time, recv_data);
+                end
+                if (recv_data.substr(0, 4) != "ERROR") begin
+                    rx_packet1.deserialize(recv_data);
+                    intf_internal.ready = rx_packet1.ready;
+                end else begin
+                    $display("Socket0 Receive failed: %s", recv_data);
                 end
             end
 
@@ -101,30 +100,29 @@ program socket_pgm(
             forever begin
                 string send_status;
                 string recv_data;
-                @(posedge intf_out0.clk or negedge intf_out0.rst_n);
-                if (intf_out0.rst_n)begin
-                    // 发送ready信号
-                    tx_packet2.ready = intf_out0.ready;
-                    send_status = socket_send(3, tx_packet2.serialize());
-                    if (debug == "1") begin
-                        $display("Socket3 Send ready at %t: %s\n", $time, tx_packet2.serialize());
-                    end
-                    if (send_status.substr(0, 1) != "OK") begin
-                        $display("Socket3 send ready failed: %s", send_status);
-                    end
-    
-                    // 接收数据
-                    recv_data = socket_recv(3);
-                    if (debug == "1") begin
-                        $display("Socket3 receive data at %t: %s\n", $time, recv_data);
-                    end
-                    if (recv_data.substr(0, 4) != "ERROR") begin
-                        rx_packet2.deserialize(recv_data);
-                        intf_out0.data = rx_packet2.data;
-                        intf_out0.valid = rx_packet2.valid;
-                    end else begin
-                        $display("Socket3 receive failed: %s", recv_data);
-                    end
+                #1;
+
+                // 发送ready信号
+                tx_packet2.ready = intf_out0.ready;
+                send_status = socket_send(3, tx_packet2.serialize());
+                if (debug == "1") begin
+                    $display("Socket3 Send ready at %t: %s\n", $time, tx_packet2.serialize());
+                end
+                if (send_status.substr(0, 1) != "OK") begin
+                    $display("Socket3 send ready failed: %s", send_status);
+                end
+
+                // 接收数据
+                recv_data = socket_recv(3);
+                if (debug == "1") begin
+                    $display("Socket3 receive data at %t: %s\n", $time, recv_data);
+                end
+                if (recv_data.substr(0, 4) != "ERROR") begin
+                    rx_packet2.deserialize(recv_data);
+                    intf_out0.data = rx_packet2.data;
+                    intf_out0.valid = rx_packet2.valid;
+                end else begin
+                    $display("Socket3 receive failed: %s", recv_data);
                 end
             end
 
@@ -132,30 +130,29 @@ program socket_pgm(
             forever begin
                 string send_status;
                 string recv_data;
-                @(posedge intf_out1.clk or negedge intf_out1.rst_n);
-                if (intf_out1.rst_n) begin
-                    // 发送ready信号
-                    tx_packet3.ready = intf_out1.ready;
-                    send_status = socket_send(4, tx_packet3.serialize());
-                    if (debug == "1") begin
-                        $display("Socket4 Send ready at %t: %s\n", $time, tx_packet3.serialize());
-                    end
-                    if (send_status.substr(0, 1) != "OK") begin
-                        $display("Socket4 send ready failed: %s", send_status);
-                    end
-    
-                    // 接收数据
-                    recv_data = socket_recv(4);
-                    if (debug == "1") begin
-                        $display("Socket4 receive data at %t: %s\n", $time, recv_data);
-                    end
-                    if (recv_data.substr(0, 4) != "ERROR") begin
-                        rx_packet3.deserialize(recv_data);
-                        intf_out1.data = rx_packet3.data;
-                        intf_out1.valid = rx_packet3.valid;
-                    end else begin
-                        $display("Socket4 receive failed: %s", recv_data);
-                    end
+                #1;
+
+                // 发送ready信号
+                tx_packet3.ready = intf_out1.ready;
+                send_status = socket_send(4, tx_packet3.serialize());
+                if (debug == "1") begin
+                    $display("Socket4 Send ready at %t: %s\n", $time, tx_packet3.serialize());
+                end
+                if (send_status.substr(0, 1) != "OK") begin
+                    $display("Socket4 send ready failed: %s", send_status);
+                end
+
+                // 接收数据
+                recv_data = socket_recv(4);
+                if (debug == "1") begin
+                    $display("Socket4 receive data at %t: %s\n", $time, recv_data);
+                end
+                if (recv_data.substr(0, 4) != "ERROR") begin
+                    rx_packet3.deserialize(recv_data);
+                    intf_out1.data = rx_packet3.data;
+                    intf_out1.valid = rx_packet3.valid;
+                end else begin
+                    $display("Socket4 receive failed: %s", recv_data);
                 end
             end
         join
